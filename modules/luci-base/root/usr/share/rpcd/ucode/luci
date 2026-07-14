@@ -768,6 +768,60 @@ const methods = {
 
 			return { result: dev_stats };
 		}
+	},
+
+	getCPUInfo: {
+		call: function() {
+			if (!access('/sbin/cpuinfo'))
+				return {};
+
+			const fd = popen('/sbin/cpuinfo');
+			if (fd) {
+				let cpuinfo = fd.read('all');
+				if (!cpuinfo)
+					cpuinfo = '?';
+				fd.close();
+
+				return { cpuinfo: cpuinfo };
+			} else {
+				return { cpuinfo: error() };
+			}
+		}
+	},
+
+	getCPUUsage: {
+		call: function() {
+			const fd = popen('top -n1 | awk \'/^CPU/ {printf("%d%", 100 - $8)}\'');
+			if (fd) {
+				let cpuusage = fd.read('all');
+				if (!cpuusage)
+					cpuusage = '?';
+				fd.close();
+
+				return { cpuusage: cpuusage };
+			} else {
+				return { cpuusage: error() };
+			}
+		}
+	},
+
+	getOnlineUsers: {
+		call: function() {
+			const fd = open('/proc/net/arp', 'r');
+			if (fd) {
+				let onlineusers = 0;
+
+				for (let line = fd.read('line'); length(line); line = fd.read('line'))
+					if (match(trim(line), /^.*(0x2).*(br-lan)$/))
+						onlineusers++;
+
+				fd.close();
+
+				return { onlineusers: onlineusers };
+			} else {
+				return { onlineusers: error() };
+			}
+		}
 	}
 };
 

@@ -25,6 +25,21 @@ var callSystemInfo = rpc.declare({
 	method: 'info'
 });
 
+var callCPUInfo = rpc.declare({
+    object: 'luci',
+    method: 'getCPUInfo'
+});
+
+var callCPUUsage = rpc.declare({
+    object: 'luci',
+    method: 'getCPUUsage'
+});
+
+var callTempInfo = rpc.declare({
+    object: 'luci',
+    method: 'getTempInfo'
+});
+
 return baseclass.extend({
 	title: _('System'),
 
@@ -34,6 +49,9 @@ return baseclass.extend({
 			L.resolveDefault(callSystemInfo(), {}),
 			L.resolveDefault(callLuciVersion(), { revision: _('unknown version'), branch: 'LuCI' }),
 			L.resolveDefault(callGetUnixtime(), 0),
+            L.resolveDefault(callCPUInfo(), {}),
+            L.resolveDefault(callCPUUsage(), {}),
+            L.resolveDefault(callTempInfo(), {}),
 			uci.load('system')
 		]);
 	},
@@ -42,7 +60,10 @@ return baseclass.extend({
 		var boardinfo   = data[0],
 		    systeminfo  = data[1],
 		    luciversion = data[2],
-		    unixtime    = data[3];
+		    unixtime    = data[3],
+            cpuinfo     = data[4],
+            cpuusage    = data[5],
+            tempinfo    = data[6];
 
 		luciversion = luciversion.branch + ' ' + luciversion.revision;
 
@@ -65,7 +86,7 @@ return baseclass.extend({
 		var fields = [
 			_('Hostname'),         boardinfo.hostname,
 			_('Model'),            boardinfo.model,
-			_('Architecture'),     boardinfo.system,
+			_('Architecture'),     cpuinfo.cpuinfo || boardinfo.system,
 			_('Target Platform'),  (L.isObject(boardinfo.release) ? boardinfo.release.target : ''),
 			_('Firmware Version'), (L.isObject(boardinfo.release) ? boardinfo.release.description + ' / ' : '') + (luciversion || ''),
 			_('Kernel Version'),   boardinfo.kernel,
@@ -75,8 +96,13 @@ return baseclass.extend({
 				systeminfo.load[0] / 65535.0,
 				systeminfo.load[1] / 65535.0,
 				systeminfo.load[2] / 65535.0
-			) : null
+			) : null,
+            _('CPU usage (%)'),    cpuusage.cpuusage
 		];
+
+        if (tempinfo.tempinfo) {
+            fields.splice(6, 0, _('Temperature'), tempinfo.tempinfo);
+        }
 
 		var table = E('table', { 'class': 'table' });
 

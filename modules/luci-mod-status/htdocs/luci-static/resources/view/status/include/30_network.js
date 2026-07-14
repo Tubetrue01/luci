@@ -14,6 +14,11 @@ const callOdhcp6cStats = rpc.declare({
 	expect: { '': {} },
 });
 
+var callOnlineUsers = rpc.declare({
+    object: 'luci',
+    method: 'getOnlineUsers'
+});
+
 function progressbar(value, max, byte) {
 	const vn = parseInt(value) || 0;
 	const mn = parseInt(max) || 100;
@@ -85,25 +90,36 @@ return baseclass.extend({
 			network.getWANNetworks(),
 			network.getWAN6Networks(),
 			callOdhcp6cStats(),
+            L.resolveDefault(callOnlineUsers(), {})
 		]);
 	},
 
 	render([ct_count, ct_max, wan_nets, wan6_nets, dhcpv6_stats]) {
 
 		const fields = [
-			{ label: _('Active Connections'), value: ct_max ? ct_count : null }
+			{ label: _('Active Connections'), value: ct_max ? ct_count : null },
+            { label: _('Online Users'), value: onlineusers ? onlineusers.onlineusers : null }
 		];
 
 		const ctstatus = E('table', { 'class': 'table' });
 
-		for (const { label, value } of fields) {
-			ctstatus.appendChild(E('tr', { 'class': 'tr' }, [
-				E('td', { 'class': 'td left', 'width': '33%' }, [ label ]),
-				E('td', { 'class': 'td left' }, [
-					(value != null) ? progressbar(value, ct_max) : '?'
-				])
-			]));
-		}
+        for (const { label, value } of fields) {
+            if (label == _('Online Users')) {
+                ctstatus.appendChild(E('tr', { 'class': 'tr' }, [
+                    E('td', { 'class': 'td left', 'width': '33%' }, [ label ]),
+                    E('td', { 'class': 'td left' }, [
+                        (value != null) ? value : '?'
+                    ])
+                ]));
+            } else {
+                ctstatus.appendChild(E('tr', { 'class': 'tr' }, [
+                    E('td', { 'class': 'td left', 'width': '33%' }, [ label ]),
+                    E('td', { 'class': 'td left' }, [
+                        (value != null) ? progressbar(value, ct_max) : '?'
+                    ])
+                ]));
+            }
+        }
 
 		const netstatus = E('div', { 'class': 'network-status-table' });
 
