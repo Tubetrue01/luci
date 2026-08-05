@@ -278,7 +278,7 @@ return view.extend({
 					E('label', { 'for': 'logTextFilter', 'style': 'margin: 0 5px' }, _('including:')),
 					filterTextInput,
 				]),
-				E('div', {'style': 'padding-bottom: 20px'}, [scrollDownButton]),
+				E('div', {'style': 'padding: 10px 0'}, [scrollDownButton]),
 				E('textarea', {
 					'id': 'syslog',
 					'style': 'font-size:12px',
@@ -286,7 +286,7 @@ return view.extend({
 					'wrap': 'off',
 					'rows': loglines.rows
 				}, [ loglines.value ]),
-				E('div', {'style': 'padding-bottom: 20px'}, [scrollUpButton])
+				E('div', {'style': 'padding: 10px 0'}, [scrollUpButton])
 			])
 		]);
 	},
