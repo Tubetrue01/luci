@@ -1,9 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2026-08-29 12:36+0000\n"
-"Last-Translator: 加尼瑪空格把變數都破壞了！ "
-"<roc_fe@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-09-02 17:27+0000\n"
+"Last-Translator: Anya Lin <hukk1996@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/openwrt/luci/zh_Hant/>\n"
 "Language: zh_Hant\n"
@@ -6742,7 +6741,7 @@ msgstr "無效十六進位值"
 
 #: protocols/luci-proto-openconnect/htdocs/luci-static/resources/protocol/openconnect.js:127
 msgid "Invalid hostname or IPv4 address"
-msgstr "無效主機名或 IPv4 位址"
+msgstr "無效主機名稱或 IPv4 位址"
 
 #: modules/luci-mod-system/htdocs/luci-static/resources/view/system/repokeys.js:156
 msgid "Invalid key format"
@@ -12816,7 +12815,7 @@ msgstr "標籤"
 #: modules/luci-mod-status/htdocs/luci-static/resources/view/status/routesj.js:219
 #: modules/luci-mod-status/htdocs/luci-static/resources/view/status/routesj.js:256
 msgid "Target"
-msgstr "目的"
+msgstr "目標"
 
 #: modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js:69
 msgid "Target Platform"
