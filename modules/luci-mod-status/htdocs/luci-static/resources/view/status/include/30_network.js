@@ -94,7 +94,7 @@ return baseclass.extend({
 		]);
 	},
 
-	render([ct_count, ct_max, wan_nets, wan6_nets, dhcpv6_stats]) {
+	render([ct_count, ct_max, wan_nets, wan6_nets, dhcpv6_stats, onlineusers]) {
 
 		const fields = [
 			{ label: _('Active Connections'), value: ct_max ? ct_count : null },
