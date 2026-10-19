@@ -703,7 +703,7 @@ return view.extend({
 			break;
 		}
 
-		const node = E('div', { 'class': 'nft-chain cbi-section' }, [
+		const node = E('div', { 'class': 'nft-chain' }, [
 			E('h4', {
 				'id': '%h.%h'.format(spec.table, spec.name)
 			}, [ title ])
